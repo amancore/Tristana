@@ -46,19 +46,30 @@ const ResetPassword = () => {
     setError(null);
     
     try {
-      // Reset password API call
-      const response = await axios.post(`${API_BASE_URL}/api/auth/reset-password`, {
-        token,
-        email,
-        password
-      });
-      
-      setSuccess(response.data.message || "Password reset successfully!");
-      setTimeout(() => {
-        navigate("/login");
-      }, 2000);
-    } catch (err: any) {
-      setError(err.response?.data?.message || "An error occurred during password reset");
+			// Reset password API call
+			// if (!token || !email) {
+			// 	setError("Invalid token or email. Please check your link.");
+			// 	return;
+			// }
+			/* changes 2 : /api/auth/new-password */
+			const response = await axios.post(
+				`${API_BASE_URL}/api/auth/new-password`,
+				{
+					token,
+					email,
+					password,
+				}
+			);
+			console.log("🚀 ~ handleSubmit ~ password:", password)
+			console.log("🚀 ~ handleSubmit ~ email:", email)
+			console.log("🚀 ~ handleSubmit ~ token:", token)
+			setSuccess(response.data.message || "Password reset successfully!");
+			setTimeout(() => {
+				navigate("/login");
+			}, 2000);
+		} catch (err: any) {
+			setError(err.response?.data?.message || "An error occurred during password reset");
+			console.log("🚀 ~ handleSubmit ~ err.response:", err.response)
     } finally {
       setLoading(false);
     }

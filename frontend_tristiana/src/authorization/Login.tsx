@@ -59,10 +59,13 @@ const Login = () => {
 			} else if (isForgotPassword) {
 				if (resetStep === 1) {
 					// Step 1: Request reset code
-					const response = await axios.post(`${API_BASE_URL}/api/auth/reset-password-request`, {
-						email: formData.email
-					});
-					
+
+					/*  changes 1 : /api/auth/forget-password  linked changed old link : /api/auth/reset-password-request */
+					const response = await axios.post( `${API_BASE_URL}/api/auth/forget-password`, {
+							email: formData.email,
+						}
+					);
+
 					setSuccess(response.data.message || "Reset code sent to your email");
 					setResetStep(2);
 				} else {
