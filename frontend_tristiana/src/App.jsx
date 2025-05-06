@@ -85,7 +85,7 @@ function App() {
 			element: <Checkout />,
 		},
 		{
-			path: "/ResetPass/*", // Product page route
+			path: "/ResetPass/:token", // Product page route
 			element: <ResetPassword />,
 		},
 		{

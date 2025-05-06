@@ -58,7 +58,7 @@ exports.loginUser = async (req, res) => {
 exports.sendResetEmail  = async(req, res) => {
     try {
       const { email } = req.body;
-      console.log(email);
+      // console.log(email);
   
       if (!email) {
         return res.status(400).json({ message: "Email is required" });
@@ -69,7 +69,7 @@ exports.sendResetEmail  = async(req, res) => {
         return res.status(404).json({ message: "Email is not registered" });
       }
   
-      console.log(user);
+      // console.log(user);
   
    
       const resetToken = crypto.randomBytes(32).toString("hex");
@@ -79,7 +79,7 @@ exports.sendResetEmail  = async(req, res) => {
       user.resetPasswordExpires = Date.now() + 15 * 60 * 1000;
       await user.save();
   
-      console.log(resetToken);
+      // console.log(resetToken);
   
       const resetURL = `http://localhost:5173/resetpass/${resetToken}`;
   
@@ -123,6 +123,7 @@ exports.sendResetEmail  = async(req, res) => {
         }
 
         const { resetToken } = req.params;
+        // console.log(resetToken)
         if (!resetToken) {
             return res.status(400).json({ message: "Reset token is required" });
         }

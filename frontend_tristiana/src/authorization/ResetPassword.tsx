@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import useCart, { CartMenu } from "../Cart/useCart";
@@ -8,68 +8,56 @@ import { API_BASE_URL } from "../config/env";
 const ResetPassword = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  // Extract token from URL params (if using query parameters)
+  const { token } = useParams(); 
   const queryParams = new URLSearchParams(location.search);
-  const token = queryParams.get('token');
-  const email = queryParams.get('email');
-  
+  const email = queryParams.get("email");
+
   const { cart, updateQuantity, removeFromCart, cartCount } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
-  
-  // Simplified form state - just password and confirmPassword
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [passwordMatch, setPasswordMatch] = useState(true);
-  
-  // Check password match whenever password or confirmPassword changes
+
   useEffect(() => {
     setPasswordMatch(!confirmPassword || password === confirmPassword);
   }, [password, confirmPassword]);
-  
+
   const toggleCart = () => {
-    setIsCartOpen(prev => !prev);
+    setIsCartOpen((prev) => !prev);
   };
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Validate passwords match
+
     if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
     }
-    
+
     setLoading(true);
     setError(null);
-    
+
     try {
-			// Reset password API call
-			// if (!token || !email) {
-			// 	setError("Invalid token or email. Please check your link.");
-			// 	return;
-			// }
-			/* changes 2 : /api/auth/new-password */
-			const response = await axios.post(
-				`${API_BASE_URL}/api/auth/new-password`,
-				{
-					token,
-					email,
-					password,
-				}
-			);
-			console.log("🚀 ~ handleSubmit ~ password:", password)
-			console.log("🚀 ~ handleSubmit ~ email:", email)
-			console.log("🚀 ~ handleSubmit ~ token:", token)
-			setSuccess(response.data.message || "Password reset successfully!");
-			setTimeout(() => {
-				navigate("/login");
-			}, 2000);
-		} catch (err: any) {
-			setError(err.response?.data?.message || "An error occurred during password reset");
-			console.log("🚀 ~ handleSubmit ~ err.response:", err.response)
+      if (!token) {
+        setError("Invalid token or email. Please check your link.");
+        return;
+      }
+
+      const response = await axios.post(`${API_BASE_URL}/api/auth/new-password/${token}`, {
+        email,
+        password,
+      });
+      console.log(token)
+      setSuccess(response.data.message || "Password reset successfully!");
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    } catch (err: any) {
+      setError(err.response?.data?.message || "An error occurred during password reset");
     } finally {
       setLoading(false);
     }
@@ -80,9 +68,9 @@ const ResetPassword = () => {
   };
 
   const checkout = () => {
-    console.log('Proceeding to checkout');
+    console.log("Proceeding to checkout");
   };
-  
+
   return (
     <>
       <Navbar cartCount={cartCount} toggleCart={toggleCart} />
@@ -99,10 +87,10 @@ const ResetPassword = () => {
               {success}
             </div>
           )}
-          
+
           <form onSubmit={handleSubmit} className="w-full">
             <h2 className="text-2xl mb-6 text-center">Reset Your Password</h2>
-            
+
             <div className="mb-4">
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                 New Password
@@ -116,7 +104,7 @@ const ResetPassword = () => {
                 required
               />
             </div>
-            
+
             <div className="mb-4">
               <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
                 Re-enter Password
@@ -135,7 +123,7 @@ const ResetPassword = () => {
                 <p className="text-red-500 text-sm mt-1">Passwords do not match</p>
               )}
             </div>
-            
+
             <button
               type="submit"
               className="w-full bg-black text-white p-3 rounded hover:bg-gray-800 disabled:bg-gray-400 mt-4"
@@ -143,7 +131,7 @@ const ResetPassword = () => {
             >
               {loading ? "Resetting..." : "Reset Password"}
             </button>
-            
+
             <p className="text-center mt-4">
               <span
                 className="text-blue-500 cursor-pointer"
@@ -155,7 +143,7 @@ const ResetPassword = () => {
           </form>
         </div>
       </div>
-      
+
       {isCartOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-30">
           <CartMenu

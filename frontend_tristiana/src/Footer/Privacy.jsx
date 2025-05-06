@@ -18,7 +18,7 @@ const PrivacyPage = () => {
 
 	const checkout = () => {
 		console.log('Proceeding to checkout');
-	};
+	} ;
 
 	return (
 		<div className="min-h-screen bg-white">
