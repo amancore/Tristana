@@ -10,7 +10,6 @@ const Login = () => {
 	const { cart, updateQuantity, removeFromCart, cartCount, totalPrice } = useCart();
 	const [isCartOpen, setIsCartOpen] = useState(false);
 
-	// Auth States
 	const [isSignup, setIsSignup] = useState(false);
 	const [isForgotPassword, setIsForgotPassword] = useState(false);
 	const [loading, setLoading] = useState(false);
@@ -20,17 +19,13 @@ const Login = () => {
 		name: "",
 		email: "",
 		password: "",
-		resetCode: "", // Added for reset password functionality
-		newPassword: "", // Added for reset password functionality
-	});       
-	const [resetStep,   setResetStep] = useState(1); // 1: Request code, 2: Enter code and new password
-      
-	// Handlers
+		resetCode: "",
+		newPassword: "",
+	});
+	const [resetStep, setResetStep] = useState(1);
+
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setFormData({
-			...formData,
-			[e.target.name]: e.target.value,
-		});
+		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 
 	const toggleCart = () => {
@@ -45,12 +40,15 @@ const Login = () => {
 
 		try {
 			if (isSignup) {
-				// Registration
-				const response = await axios.post(`${API_BASE_URL}/api/auth/signup`, {
-					name: formData.name,
-					email: formData.email,
-					password: formData.password,
-				});
+				const response = await axios.post(
+					`${API_BASE_URL}/api/auth/signup`,
+					{
+						name: formData.name,
+						email: formData.email,
+						password: formData.password,
+					},
+					{ withCredentials: true }
+				);
 
 				setSuccess(response.data.message || "Account created successfully!");
 				setTimeout(() => {
@@ -58,24 +56,25 @@ const Login = () => {
 				}, 2000);
 			} else if (isForgotPassword) {
 				if (resetStep === 1) {
-					// Step 1: Request reset code
-
-					/*  changes 1 : /api/auth/forget-password  linked changed old link : /api/auth/reset-password-request */
-					const response = await axios.post( `${API_BASE_URL}/api/auth/forget-password`, {
-							email: formData.email,
-						}
+					const response = await axios.post(
+						`${API_BASE_URL}/api/auth/forget-password`,
+						{ email: formData.email },
+						{ withCredentials: true }
 					);
 
 					setSuccess(response.data.message || "Reset code sent to your email");
 					setResetStep(2);
 				} else {
-					// Step 2: Verify code and set new password
-					const response = await axios.post(`${API_BASE_URL}/api/auth/reset-password-confirm`, {
-						email: formData.email,
-						resetCode: formData.resetCode,
-						newPassword: formData.newPassword
-					});
-					
+					const response = await axios.post(
+						`${API_BASE_URL}/api/auth/reset-password-confirm`,
+						{
+							email: formData.email,
+							resetCode: formData.resetCode,
+							newPassword: formData.newPassword,
+						},
+						{ withCredentials: true }
+					);
+
 					setSuccess(response.data.message || "Password reset successfully!");
 					setTimeout(() => {
 						setIsForgotPassword(false);
@@ -83,15 +82,18 @@ const Login = () => {
 					}, 2000);
 				}
 			} else {
-				// Login
-				const response = await axios.post(`${API_BASE_URL}/api/auth/login`, {
-					email: formData.email,
-					password: formData.password,
-				});
+				const response = await axios.post(
+					`${API_BASE_URL}/api/auth/login`,
+					{
+						email: formData.email,
+						password: formData.password,
+					},
+					{ withCredentials: true }
+				);
 
 				localStorage.setItem("token", response.data.token || "");
 				localStorage.setItem("user", JSON.stringify(response.data.user || {}));
-				
+
 				setSuccess("Login successful!");
 				setTimeout(() => {
 					navigate("/");
@@ -139,7 +141,7 @@ const Login = () => {
 				</>
 			);
 		}
-		
+
 		return (
 			<>
 				<h2 className="text-2xl mb-6 text-center">Reset Password</h2>
@@ -295,8 +297,6 @@ const Login = () => {
 	return (
 		<>
 			<Navbar cartCount={cartCount} toggleCart={toggleCart} />
-
-			{/* Login Form */}
 			<div className="min-h-screen flex items-center justify-center bg-gray-100 pt-20">
 				<div className="bg-white p-8 rounded-lg shadow-md">
 					{error && (
@@ -312,8 +312,7 @@ const Login = () => {
 					{renderLoginForm()}
 				</div>
 			</div>
-			
-			{/* Add CartMenu component */}
+
 			{isCartOpen && (
 				<div className="fixed inset-0 bg-black bg-opacity-50 z-30">
 					<CartMenu

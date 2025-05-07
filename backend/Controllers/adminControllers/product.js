@@ -47,7 +47,8 @@ exports.addProducts = async (req, res) => {
     try {
       const stockData = req.body.stock;
 
-      if (!req.files || req.files.length === 0) {
+      // if (!req.files || req.files.length === 0) {
+        if (req.files.length === 0) {
         return res.status(400).json({ message: "At least one product image is required" });
       }
 

@@ -14,6 +14,7 @@ router.use("/banners",protect,protectAdmin,bannersRoutes);
 router.use("/coupons",protect,protectAdmin,couponsRoutes);
 router.use("/orders",protect,protectAdmin,ordersRoutes);
 router.use("/products",protect, protectAdmin,productsRoutes);
+// router.use("/products",productsRoutes);
 router.use("/stats",protect, protectAdmin,statsRoutes);
 
 

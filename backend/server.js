@@ -15,7 +15,7 @@ const connectDB=require("./config/db")
 const app = express();
 
 const corsOption = {
-    origin: '*',
+    origin: 'http://localhost:5173',
     methods: ["GET", "POST", "DELETE","PUT"],
     credentials: true 
 };
@@ -23,8 +23,8 @@ app.use(cors(corsOption));
 
 
 // Middleware
-app.use(express.json()); 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(cookieParser()); 
 
 

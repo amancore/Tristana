@@ -38,10 +38,17 @@ const ProductManagement = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		const config = {
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			withCredentials: true
+		};
+
 		if (editingProduct) {
-			await axios.put(`${API_BASE_URL}/api/admin/products/${editingProduct._id}`, newProduct);
+			await axios.put(`${API_BASE_URL}/api/admin/products/${editingProduct._id}`, newProduct, config);
 		} else {
-			await axios.post(`${API_BASE_URL}/api/admin/products`, newProduct);
+			await axios.post(`${API_BASE_URL}/api/admin/products/addProduct`, newProduct, config);
 		}
 		fetchProducts();
 		resetForm();
