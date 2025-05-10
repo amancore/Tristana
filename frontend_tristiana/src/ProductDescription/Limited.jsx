@@ -10,7 +10,7 @@ import Navbar from '../components/Navbar';
 import useCart, { CartMenu } from '../Cart/useCart';
 
 // Use environment variable for API URL
-const API_URL = `${import.meta.env.VITE_API_BASE_URL}/pages/limitedStocks?category=Limited_stocks`;
+const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api/pages/limitedStocks?category=Limited_stocks`;
 
 const ProductCard = ({ product, onAddToCart }) => {
 	return (

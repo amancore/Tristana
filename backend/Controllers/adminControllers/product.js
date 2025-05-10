@@ -45,7 +45,7 @@ exports.addProducts = async (req, res) => {
     }
 
     try {
-      const stockData = req.body.stock;
+      const stockData = JSON.parse(req.body.stock);
 
       // if (!req.files || req.files.length === 0) {
         if (req.files.length === 0) {
@@ -63,12 +63,12 @@ exports.addProducts = async (req, res) => {
         discount:req.body.discount,
         images: imagePaths,
         stock: {
-          XS: parseInt(stockData.XS) || 0,
-          S: parseInt(stockData.S) || 0,
-          M: parseInt(stockData.M) || 0,
-          L: parseInt(stockData.L) || 0,
-          XL: parseInt(stockData.XL) || 0,
-          XXL: parseInt(stockData.XXL) || 0,
+          XS: parseInt(stockData?.XS|| 0),
+          S: parseInt(stockData?.S || 0),
+          M: parseInt(stockData?.M || 0),
+          L: parseInt(stockData?.L || 0),
+          XL: parseInt(stockData?.XL || 0),
+          XXL: parseInt(stockData?.XXL || 0),
         },
       });
 
@@ -93,7 +93,7 @@ exports.updateProducts = async (req, res) => {
     }
 
     try {
-      const stockData = req.body.stock ;
+      const stockData = JSON.parse(req.body.stock);
 
       let imagePaths;
       if (req.files && req.files.length > 0) {
@@ -101,14 +101,14 @@ exports.updateProducts = async (req, res) => {
       } else {
         imagePaths = req.body.existingImages;
       }
-
+      // console.log(stockData)
       const updatedProduct = {
         name: req.body.name,
         price: parseFloat(req.body.price),
         description: req.body.description,
         clothType:req.body.clothType,
         category: req.body.category,
-        discound:req.body.category,
+        discount:req.body.discount,
         images: imagePaths, 
         stock: {
           XS: parseInt(stockData.XS) || 0,

@@ -62,7 +62,7 @@ const ProductManagement = () => {
 		};
 
 		if (editingProduct) {
-			await axios.put(`${API_BASE_URL}/api/admin/products/${editingProduct._id}`, formData, config);
+			await axios.put(`${API_BASE_URL}/api/admin/products/updateProduct/${editingProduct._id}`, formData, config);
 		} else {
 			await axios.post(`${API_BASE_URL}/api/admin/products/addProduct`, formData, config);
 		}
@@ -72,7 +72,9 @@ const ProductManagement = () => {
 	};
 
 	const handleDelete = async (id) => {
-		await axios.delete(`${API_BASE_URL}/api/admin/products/${id}`);
+		await axios.delete(`${API_BASE_URL}/api/admin/products/deleteProduct/${id}`,{
+			withCredentials: true
+		});
 		fetchProducts();
 	};
 
@@ -204,7 +206,9 @@ const ProductManagement = () => {
 										<th className="text-left p-2">Images</th>
 										<th className="text-left p-2">Name</th>
 										<th className="text-left p-2">Category</th>
+										<th className="text-left p-2">Cloth Type</th>
 										<th className="text-left p-2">Price</th>
+										<th className="text-left p-2">Discount</th>
 										<th className="text-left p-2">Stock</th>
 										<th className="text-left p-2">Actions</th>
 									</tr>
@@ -219,7 +223,9 @@ const ProductManagement = () => {
 											</td>
 											<td className="p-2">{product.name}</td>
 											<td className="p-2">{product.category}</td>
+											<td className="p-2">{product.clothType}</td>
 											<td className="p-2">₹{product.price}</td>
+											<td className="p-2">{product.discount}</td>
 											<td className="p-2">
 												{Object.entries(product.stock).map(([size, quantity]) => (
 													<div key={size}>{size}: {quantity}</div>

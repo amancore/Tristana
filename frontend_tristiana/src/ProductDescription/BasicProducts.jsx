@@ -10,8 +10,7 @@ import Navbar from '../components/Navbar';
 import useCart, { CartMenu } from '../Cart/useCart';
 
 // Use environment variable for API URL
-const API_URL = `${import.meta.env.VITE_API_BASE_URL}/pages/basics?category=Basics`;
-
+const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api/pages/basics?category=Basics`;
 const ProductCard = ({ product, onAddToCart }) => {
 	return (
 		<div className="product-card block bg-white overflow-hidden transition-transform duration-300 hover:scale-105 relative">

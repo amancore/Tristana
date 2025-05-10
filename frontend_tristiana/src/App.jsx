@@ -41,7 +41,7 @@ function App() {
       element: <Product />,
     },
     {
-      path: "/Basic/:id", // Product page route
+      path: "/Basic", // Product page route
       element: <Basic />,
     },
     {
