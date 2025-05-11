@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require('cors');
-
+const path = require('path');
 
 // Routes require
 const authRoutes = require("./Routes/authRoutes");
@@ -39,10 +39,13 @@ app.use("/api/pages",pageRouter);
 app.use("/api/cart",cartRouter);
 app.use("/api/checkout",checkout);
 
-
+//publicly access to uploads forder 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+
 
 
 process.on("SIGINT", () => {
@@ -52,5 +55,8 @@ process.on("SIGINT", () => {
         process.exit(0);
     });
 });
+
+
+
 // useNewUrlParser:true- ensure the updated url parsing 
 // useUnifiedToPology:true- ensure the upated connection managment
